@@ -152,6 +152,8 @@ const PREVIEWS: Record<string, () => React.ReactNode> = {
       variant="outgoing"
       title="Yes"
       replyType="button_reply"
+      quotedAuthor="Acme Support"
+      quotedText="Would you like a demo?"
       timestamp="10:25"
       status="read"
       showTail
@@ -354,6 +356,8 @@ const CODE_SNIPPETS: Record<string, string> = {
   variant="outgoing"
   title="Yes"
   replyType="button_reply"
+  quotedAuthor="Acme Support"
+  quotedText="Would you like a demo?"
   timestamp="10:25"
   status="read"
   showTail
