@@ -439,10 +439,11 @@
       "name": "interactive-reply-bubble",
       "type": "registry:component",
       "title": "Interactive Reply Bubble",
-      "description": "WhatsApp-style interactive reply bubble — shows received button, list, or flow replies with icon and subtype label.",
+      "description": "WhatsApp-style interactive reply bubble — the chosen button, list, or flow option, quoting the message it answers.",
       "registryDependencies": [],
       "files": [
         { "path": "components/ui/whatsapp/interactive-reply-bubble.tsx", "type": "registry:component", "target": "components/ui/whatsapp/interactive-reply-bubble.tsx" },
+        { "path": "components/ui/whatsapp/reply-preview.tsx", "type": "registry:component", "target": "components/ui/whatsapp/reply-preview.tsx" },
         { "path": "components/ui/whatsapp/message-status.tsx", "type": "registry:component", "target": "components/ui/whatsapp/message-status.tsx" },
         { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
       ]

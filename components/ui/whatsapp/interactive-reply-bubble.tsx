@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { type MessageStatus, MessageStatusIcon } from "./message-status";
+import { ReplyPreview } from "./reply-preview";
 import "@/components/ui/whatsapp/styles/whatsapp.css";
 
 export type InteractiveReplyType =
@@ -16,40 +17,25 @@ export interface InteractiveReplyBubbleProps extends React.HTMLAttributes<HTMLDi
   variant?: "incoming" | "outgoing";
   /** The reply title or text shown by the user */
   title: string;
-  /** Subtype label — e.g. "button_reply", "list_reply", "nfm_reply" */
+  /** Subtype — e.g. "button_reply", "list_reply", "nfm_reply" */
   replyType?: InteractiveReplyType;
   /** Optional description (for list replies) */
   description?: string;
+  /** Author of the quoted message, e.g. "You" */
+  quotedAuthor?: string;
+  /** Accent color for the quote bar and author name */
+  quotedAuthorColor?: string;
+  /** Body of the message being replied to */
+  quotedText?: string;
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
 }
 
-const REPLY_TYPE_LABELS: Record<string, string> = {
-  button_reply: "Button reply",
-  list_reply: "List reply",
-  nfm_reply: "Flow reply",
-  button: "Button reply",
-};
-
-function ReplyIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-    </svg>
-  );
-}
-
+/**
+ * A button/list reply as WhatsApp renders it: a quote of the message the
+ * user tapped, followed by the chosen option as plain text.
+ */
 const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReplyBubbleProps>(
   (
     {
@@ -58,6 +44,9 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
       title,
       replyType,
       description,
+      quotedAuthor,
+      quotedAuthorColor,
+      quotedText,
       timestamp,
       status,
       showTail = false,
@@ -66,7 +55,6 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
     ref
   ) => {
     const isOutgoing = variant === "outgoing";
-    const label = (replyType && REPLY_TYPE_LABELS[replyType]) || "Reply";
 
     return (
       <div
@@ -76,12 +64,14 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
           showTail ? "mb-[6px]" : "mb-[2px]",
           className
         )}
+        data-reply-type={replyType}
         {...props}
         ref={ref}
       >
         <div
           className={cn(
             "font-wa relative max-w-[60%] overflow-visible rounded-lg px-3 pb-[7px] pt-[6px]",
+            quotedText && "min-w-[180px] px-[6px] pt-[6px]",
             isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming",
             showTail && (isOutgoing ? "rounded-br-none" : "rounded-bl-none")
           )}
@@ -99,36 +89,34 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
             </svg>
           )}
 
-          <div className="flex items-center gap-2">
-            <div
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md"
-              style={{ background: "var(--wa-teal, #00a884)", opacity: 0.85 }}
-            >
-              <ReplyIcon />
-            </div>
-            <div className="min-w-0">
-              <p className="text-[14.2px] font-medium leading-[19px] text-wa-text-primary">
-                {title}
-              </p>
-              <p className="text-[12px] leading-[16px] text-wa-text-secondary">
-                {label}
-              </p>
-            </div>
-          </div>
-
-          {description && (
-            <p className="mt-[4px] text-[12.5px] leading-[17px] text-wa-text-secondary">
-              {description}
-            </p>
+          {quotedText && (
+            <ReplyPreview
+              className="mb-[4px]"
+              author={quotedAuthor || "You"}
+              authorColor={quotedAuthorColor}
+              body={quotedText}
+            />
           )}
 
-          <div className="mt-[2px] flex items-center justify-end gap-[3px]">
-            {timestamp && (
-              <span className="text-[11px] leading-[15px] text-wa-bubble-meta">
-                {timestamp}
-              </span>
+          <div className={cn(quotedText && "px-[6px]")}>
+            <p className="whitespace-pre-wrap break-words text-[14.2px] leading-[19px] text-wa-text-primary">
+              {title}
+            </p>
+
+            {description && (
+              <p className="mt-[2px] text-[12.5px] leading-[17px] text-wa-text-secondary">
+                {description}
+              </p>
             )}
-            {isOutgoing && status && <MessageStatusIcon status={status} />}
+
+            <div className="mt-[2px] flex items-center justify-end gap-[3px]">
+              {timestamp && (
+                <span className="text-[11px] leading-[15px] text-wa-bubble-meta">
+                  {timestamp}
+                </span>
+              )}
+              {isOutgoing && status && <MessageStatusIcon status={status} />}
+            </div>
           </div>
         </div>
       </div>
