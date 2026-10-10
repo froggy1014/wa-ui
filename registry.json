@@ -539,6 +539,18 @@
         { "path": "components/ui/whatsapp/message-text.tsx", "type": "registry:component", "target": "components/ui/whatsapp/message-text.tsx" },
         { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
       ]
+    },
+    {
+      "name": "media-viewer",
+      "type": "registry:component",
+      "title": "Media Viewer",
+      "description": "WhatsApp-style full-screen viewer for chat images and videos: caption, download, previous/next with arrow keys, closes on Escape or backdrop click. Pair with image-bubble onMediaClick. Uses @base-ui/react Dialog.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "components/ui/whatsapp/media-viewer.tsx", "type": "registry:component", "target": "components/ui/whatsapp/media-viewer.tsx" },
+        { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
+      ]
     }
   ]
 }
