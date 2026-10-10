@@ -59,7 +59,7 @@ const InteractiveButtonBubble = React.forwardRef<HTMLDivElement, InteractiveButt
       >
         <div
           className={cn(
-            "font-wa relative w-[320px] overflow-hidden rounded-lg",
+            "font-wa relative w-full max-w-[320px] overflow-hidden rounded-lg",
             isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming",
             showTail && (isOutgoing ? "rounded-br-none" : "rounded-bl-none")
           )}

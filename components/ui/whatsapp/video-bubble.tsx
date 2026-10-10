@@ -63,14 +63,14 @@ const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
       >
         <div
           className={cn(
-            "font-wa relative max-w-[336px] overflow-hidden rounded-lg",
+            "font-wa relative w-full max-w-[336px] overflow-hidden rounded-lg",
             showTail && (isOutgoing ? "rounded-br-[3px]" : "rounded-bl-[3px]")
           )}
         >
           {/* Video */}
           <div className="relative cursor-pointer bg-wa-gray-800" onClick={togglePlay}>
             {!loaded && (
-              <div className="flex h-[200px] w-[336px] items-center justify-center">
+              <div className="flex h-[200px] w-[336px] max-w-full items-center justify-center">
                 <div className="animate-pulse bg-wa-gray-700 absolute inset-0" />
               </div>
             )}
