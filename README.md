@@ -45,6 +45,7 @@ Each component is independent — install only what you need.
 | `message-actions` | Right-click / long-press menu with quick reactions, Reply, Copy |
 | `reply-bar` | "Replying to…" strip above the compose bar |
 | `emoji-picker` | Compose-bar emoji button with a categorized grid |
+| `message-text` | WhatsApp *bold* / _italic_ / ~strike~ / `code` and clickable links |
 
 ---
 
