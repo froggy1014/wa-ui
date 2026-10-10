@@ -150,6 +150,11 @@
           "target": "components/ui/whatsapp/image-bubble.tsx"
         },
         {
+          "path": "components/ui/whatsapp/message-status.tsx",
+          "type": "registry:component",
+          "target": "components/ui/whatsapp/message-status.tsx"
+        },
+        {
           "path": "components/ui/whatsapp/styles/whatsapp.css",
           "type": "registry:file",
           "target": "components/ui/whatsapp/styles/whatsapp.css"

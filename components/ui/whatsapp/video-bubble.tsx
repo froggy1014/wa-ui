@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { type MessageStatus, MessageStatusIcon } from "./message-status";
+import { MediaSendingOverlay, type MessageStatus, MessageStatusIcon } from "./message-status";
 import "@/components/ui/whatsapp/styles/whatsapp.css";
 
 interface VideoBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -88,8 +88,10 @@ const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
               )}
             />
 
+            {isOutgoing && status === "sending" && <MediaSendingOverlay />}
+
             {/* Play button overlay */}
-            {loaded && !playing && (
+            {loaded && !playing && status !== "sending" && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/50">
                   <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
@@ -111,7 +113,7 @@ const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
               <div className="absolute bottom-[6px] right-[8px] flex items-center gap-[3px] rounded-full bg-black/40 px-[6px] py-[2px]">
                 {timestamp && <span className="text-[11px] leading-[15px] text-white">{timestamp}</span>}
                 {isOutgoing && status && (
-                  <span className="text-white"><MessageStatusIcon status={status} /></span>
+                  <span className="text-white"><MessageStatusIcon status={status} className="text-white" /></span>
                 )}
               </div>
             )}

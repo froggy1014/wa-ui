@@ -33,6 +33,12 @@ export const ImageOutgoing: Story = {
   render: () => <ImageBubble variant="outgoing" src={PORTRAIT} caption="Japan looks amazing! 🗼" timestamp="10:27" status="delivered" showTail />,
 };
 
+/** Outgoing media still sending: dimmed, upload ring, pending clock. */
+export const ImageSending: Story = {
+  name: "Image / Sending",
+  render: () => <ImageBubble variant="outgoing" src={LANDSCAPE} timestamp="10:31" status="sending" showTail />,
+};
+
 export const ImageGrid2: Story = {
   name: "Image / Grid 2",
   render: () => <ImageBubble variant="outgoing" images={[LANDSCAPE, PORTRAIT]} timestamp="10:28" status="read" showTail />,

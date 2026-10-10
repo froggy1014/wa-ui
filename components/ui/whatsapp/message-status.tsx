@@ -22,10 +22,41 @@ function DoubleCheckIcon({ className }: { className?: string }) {
   );
 }
 
+/** WhatsApp's pending-message clock, shown until the server accepts the message. */
+function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 16 15" height="15" width="16" className={className} aria-label="Sending">
+      <path d="M9.75 7.713H8.244V5.359a.5.5 0 0 0-.5-.5H7.65a.5.5 0 0 0-.5.5v2.947a.5.5 0 0 0 .5.5h.094l.003-.001.003.002h2a.5.5 0 0 0 .5-.5v-.094a.5.5 0 0 0-.5-.5zm0-5.263h-3.5c-1.82 0-3.3 1.48-3.3 3.3v3.5c0 1.82 1.48 3.3 3.3 3.3h3.5c1.82 0 3.3-1.48 3.3-3.3v-3.5c0-1.82-1.48-3.3-3.3-3.3zm2 6.8a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2v-3.5a2 2 0 0 1 2-2h3.5a2 2 0 0 1 2 2v3.5z" fill="currentColor" />
+    </svg>
+  );
+}
+
+/**
+ * Upload indicator for outgoing media that is still sending: dims the media and
+ * shows WhatsApp's spinning ring. Place inside a `relative` media container.
+ */
+export function MediaSendingOverlay({ className }: { className?: string }) {
+  return (
+    <div
+      role="status"
+      aria-label="Sending"
+      className={"absolute inset-0 z-[5] flex items-center justify-center bg-black/30 " + (className ?? "")}
+    >
+      <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-black/50">
+        <svg viewBox="0 0 44 44" width="40" height="40" className="animate-spin" aria-hidden="true">
+          <circle cx="22" cy="22" r="18" fill="none" stroke="currentColor" strokeWidth="3" className="text-white/25" />
+          <circle cx="22" cy="22" r="18" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeDasharray="28 200" className="text-white" />
+        </svg>
+      </span>
+    </div>
+  );
+}
+
 /** Renders the appropriate status icon for a given MessageStatus. */
-export function MessageStatusIcon({ status }: { status: MessageStatus }) {
+export function MessageStatusIcon({ status, className }: { status: MessageStatus; className?: string }) {
   switch (status) {
     case "sending":
+      return <span className={className ?? "text-wa-bubble-meta"}><ClockIcon /></span>;
     case "sent":
       return <span className="text-wa-delivered opacity-75"><CheckIcon /></span>;
     case "delivered":
