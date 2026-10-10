@@ -4,6 +4,7 @@ import * as React from "react";
 import { Button } from "@base-ui/react/button";
 import { cn } from "@/lib/utils";
 import "@/components/ui/whatsapp/styles/whatsapp.css";
+import { type MessageStatus, MessageStatusIcon } from "./message-status";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -50,6 +51,8 @@ export interface TemplateBubbleProps
   footer?: string;
   buttons?: TemplateButton[];
   timestamp?: string;
+  /** Delivery status ticks, shown for outgoing templates */
+  status?: MessageStatus;
   /** Override the default `<a>` element for URL/phone buttons (e.g. Next.js Link) */
   renderAction?: (props: { href: string; children: React.ReactNode; className: string; target?: string; rel?: string }) => React.ReactElement;
 }
@@ -249,7 +252,7 @@ function TemplateButtonRow({ button, renderAction }: { button: TemplateButton; r
 // ─── Main component ───────────────────────────────────────────────────────────
 
 const TemplateBubble = React.forwardRef<HTMLDivElement, TemplateBubbleProps>(
-  ({ className, variant = "incoming", header, body, footer, buttons = [], timestamp, renderAction, ...props }, ref) => {
+  ({ className, variant = "incoming", header, body, footer, buttons = [], timestamp, status, renderAction, ...props }, ref) => {
     const hasButtons = buttons.length > 0;
     const isOutgoing = variant === "outgoing";
 
@@ -283,8 +286,9 @@ const TemplateBubble = React.forwardRef<HTMLDivElement, TemplateBubbleProps>(
               </p>
             )}
             {timestamp && (
-              <div className="mt-[2px] flex justify-end">
+              <div className="mt-[2px] flex items-center justify-end gap-[3px]">
                 <span className="text-[11px] leading-[15px] text-wa-bubble-meta">{timestamp}</span>
+                {variant === "outgoing" && status && <MessageStatusIcon status={status} />}
               </div>
             )}
           </div>
