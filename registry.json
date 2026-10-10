@@ -511,6 +511,18 @@
         { "path": "components/ui/whatsapp/reply-preview.tsx", "type": "registry:component", "target": "components/ui/whatsapp/reply-preview.tsx" },
         { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
       ]
+    },
+    {
+      "name": "emoji-picker",
+      "type": "registry:component",
+      "title": "Emoji Picker",
+      "description": "WhatsApp-style compose-bar emoji button with a categorized popover grid that stays open while picking. Uses @base-ui/react Popover.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "components/ui/whatsapp/emoji-picker.tsx", "type": "registry:component", "target": "components/ui/whatsapp/emoji-picker.tsx" },
+        { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
+      ]
     }
   ]
 }

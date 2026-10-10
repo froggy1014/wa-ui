@@ -7,6 +7,9 @@ import "@/components/ui/whatsapp/styles/whatsapp.css";
 interface MessageInputProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSubmit"> {
   onSubmit?: (message: string) => void;
+  /** Controlled text — pair with onValueChange, e.g. to insert emojis from outside */
+  value?: string;
+  onValueChange?: (value: string) => void;
   placeholder?: string;
   disabled?: boolean;
   /** Custom elements rendered to the left of the text input, inside the rounded input area */
@@ -17,8 +20,13 @@ interface MessageInputProps
 }
 
 const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
-  ({ className, onSubmit, placeholder = "Type a message", disabled = false, leftActions, rightAction, ...props }, ref) => {
-    const [message, setMessage] = React.useState("");
+  ({ className, onSubmit, value, onValueChange, placeholder = "Type a message", disabled = false, leftActions, rightAction, ...props }, ref) => {
+    const [internal, setInternal] = React.useState("");
+    const message = value ?? internal;
+    const setMessage = (next: string) => {
+      if (value === undefined) setInternal(next);
+      onValueChange?.(next);
+    };
     const [multiline, setMultiline] = React.useState(false);
     const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
@@ -49,6 +57,11 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
         setMultiline(h > 24);
       }
     };
+
+    // Text set from outside (emoji, draft restore) must resize like typing does.
+    React.useEffect(() => {
+      handleInput();
+    }, [message]);
 
     return (
       <div
