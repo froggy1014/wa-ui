@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import "@/components/ui/whatsapp/styles/whatsapp.css";
-import { type MessageStatus } from "./message-status";
+import { MediaSendingOverlay, type MessageStatus, MessageStatusIcon } from "./message-status";
 
 interface ImageBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "incoming" | "outgoing";
@@ -153,7 +153,8 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
 
     const statusIcon = () => {
       if (!isOutgoing || !status) return null;
-      if (status === "sending" || status === "sent")
+      if (status === "sending") return <MessageStatusIcon status="sending" className="text-white" />;
+      if (status === "sent")
         return <span className="text-white opacity-75"><CheckIcon /></span>;
       if (status === "delivered")
         return <span className="text-white opacity-90"><DoubleCheckIcon /></span>;
@@ -185,6 +186,7 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
           {/* Media / Grid */}
           <div className="relative">
             <ImageGrid items={items} />
+            {isOutgoing && status === "sending" && <MediaSendingOverlay />}
 
             {/* Timestamp overlay (no caption) */}
             {!caption && (
@@ -201,7 +203,9 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
               <div className="float-right -mb-1 ml-2 mt-1 flex items-center gap-[3px]">
                 {timestamp && <span className="text-[11px] leading-[15px] text-wa-bubble-meta">{timestamp}</span>}
                 {isOutgoing && status && (
-                  status === "read"
+                  status === "sending"
+                    ? <MessageStatusIcon status="sending" />
+                    : status === "read"
                     ? <span className="text-wa-read"><DoubleCheckIcon /></span>
                     : status === "delivered"
                     ? <span className="text-wa-delivered"><DoubleCheckIcon /></span>

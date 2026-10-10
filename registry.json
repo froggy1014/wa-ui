@@ -150,6 +150,11 @@
           "target": "components/ui/whatsapp/image-bubble.tsx"
         },
         {
+          "path": "components/ui/whatsapp/message-status.tsx",
+          "type": "registry:component",
+          "target": "components/ui/whatsapp/message-status.tsx"
+        },
+        {
           "path": "components/ui/whatsapp/styles/whatsapp.css",
           "type": "registry:file",
           "target": "components/ui/whatsapp/styles/whatsapp.css"
@@ -480,6 +485,30 @@
       "registryDependencies": [],
       "files": [
         { "path": "components/ui/whatsapp/chat-menu.tsx", "type": "registry:component", "target": "components/ui/whatsapp/chat-menu.tsx" },
+        { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
+      ]
+    },
+    {
+      "name": "message-actions",
+      "type": "registry:component",
+      "title": "Message Actions",
+      "description": "WhatsApp-style per-message menu opened by right click, long press, or a hover button — quick reaction bar, expandable emoji grid, and rows like Reply or Copy. Uses @base-ui/react ContextMenu and Menu.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [],
+      "files": [
+        { "path": "components/ui/whatsapp/message-actions.tsx", "type": "registry:component", "target": "components/ui/whatsapp/message-actions.tsx" },
+        { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
+      ]
+    },
+    {
+      "name": "reply-bar",
+      "type": "registry:component",
+      "title": "Reply Bar",
+      "description": "WhatsApp-style \"replying to\" strip above the message input, with a cancel button and Escape to dismiss.",
+      "registryDependencies": [],
+      "files": [
+        { "path": "components/ui/whatsapp/reply-bar.tsx", "type": "registry:component", "target": "components/ui/whatsapp/reply-bar.tsx" },
+        { "path": "components/ui/whatsapp/reply-preview.tsx", "type": "registry:component", "target": "components/ui/whatsapp/reply-preview.tsx" },
         { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
       ]
     }
