@@ -53,7 +53,8 @@ function ImageCell({
   const [loaded, setLoaded] = React.useState(false);
 
   return (
-    <div className={cn("relative overflow-hidden bg-wa-gray-800", className)}>
+    // The placeholder colour only shows while loading; transparent PNGs then sit on the bubble.
+    <div className={cn("relative overflow-hidden", !loaded && "bg-wa-gray-800", className)}>
       {!loaded && (
         <div className={cn("animate-pulse bg-wa-gray-700", naturalSize ? "min-h-[160px] w-full" : "absolute inset-0")} />
       )}

@@ -53,3 +53,15 @@ export const Carousel: Story = {
     </div>
   ),
 };
+
+/** Outgoing template with delivery ticks. */
+export const OutgoingWithStatus: Story = {
+  render: () => (
+    <TemplateBubble
+      variant="outgoing"
+      body="Your request has been received. We'll get back to you shortly."
+      timestamp="10:42"
+      status="read"
+    />
+  ),
+};

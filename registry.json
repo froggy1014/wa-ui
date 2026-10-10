@@ -225,6 +225,11 @@
           "target": "components/ui/whatsapp/template-bubble.tsx"
         },
         {
+          "path": "components/ui/whatsapp/message-status.tsx",
+          "type": "registry:component",
+          "target": "components/ui/whatsapp/message-status.tsx"
+        },
+        {
           "path": "public/wa-header-image.png",
           "type": "registry:file",
           "target": "public/wa-header-image.png"
