@@ -14,6 +14,8 @@ interface VideoBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
 }
 
 const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
@@ -27,6 +29,7 @@ const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
       timestamp,
       status,
       showTail = false,
+      quote,
       ...props
     },
     ref
@@ -67,6 +70,9 @@ const VideoBubble = React.forwardRef<HTMLDivElement, VideoBubbleProps>(
             showTail && (isOutgoing ? "rounded-br-[3px]" : "rounded-bl-[3px]")
           )}
         >
+          {quote && (
+            <div className={cn("px-[3px] pt-[3px]", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming")}>{quote}</div>
+          )}
           {/* Video */}
           <div className="relative cursor-pointer bg-wa-gray-800" onClick={togglePlay}>
             {!loaded && (

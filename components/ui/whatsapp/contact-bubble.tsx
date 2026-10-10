@@ -20,6 +20,8 @@ export interface ContactBubbleProps extends React.HTMLAttributes<HTMLDivElement>
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
   onMessageContact?: (contact: ContactItem) => void;
   onAddContact?: (contact: ContactItem) => void;
 }
@@ -74,6 +76,7 @@ const ContactBubble = React.forwardRef<HTMLDivElement, ContactBubbleProps>(
       timestamp,
       status,
       showTail = false,
+      quote,
       onMessageContact,
       onAddContact,
       ...props
@@ -115,6 +118,9 @@ const ContactBubble = React.forwardRef<HTMLDivElement, ContactBubbleProps>(
             </svg>
           )}
 
+          {quote && (
+            <div className={cn("px-[3px] pt-[3px]", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming")}>{quote}</div>
+          )}
           {/* Primary contact */}
           <ContactRow contact={primary} />
 

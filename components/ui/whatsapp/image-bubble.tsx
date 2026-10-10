@@ -16,6 +16,8 @@ interface ImageBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
   /** Called when an image is clicked (e.g. open a MediaViewer) with its index and src */
   onMediaClick?: (index: number, src: string) => void;
 }
@@ -158,6 +160,7 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
       timestamp,
       status,
       showTail = false,
+      quote,
       onMediaClick,
       ...props
     },
@@ -169,6 +172,7 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
     const statusIcon = () => {
       if (!isOutgoing || !status) return null;
       if (status === "sending") return <MessageStatusIcon status="sending" className="text-white" />;
+      if (status === "failed") return <MessageStatusIcon status="failed" />;
       if (status === "sent")
         return <span className="text-white opacity-75"><CheckIcon /></span>;
       if (status === "delivered")
@@ -198,6 +202,9 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
             </svg>
           )}
 
+          {quote && (
+            <div className={cn("px-[3px] pt-[3px]", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming")}>{quote}</div>
+          )}
           {/* Media / Grid */}
           <div className="relative">
             <ImageGrid items={items} onOpen={onMediaClick ? (i) => onMediaClick(i, items[i]) : undefined} />
@@ -218,8 +225,8 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
               <div className="float-right -mb-1 ml-2 mt-1 flex items-center gap-[3px]">
                 {timestamp && <span className="text-[11px] leading-[15px] text-wa-bubble-meta">{timestamp}</span>}
                 {isOutgoing && status && (
-                  status === "sending"
-                    ? <MessageStatusIcon status="sending" />
+                  status === "sending" || status === "failed"
+                    ? <MessageStatusIcon status={status} />
                     : status === "read"
                     ? <span className="text-wa-read"><DoubleCheckIcon /></span>
                     : status === "delivered"

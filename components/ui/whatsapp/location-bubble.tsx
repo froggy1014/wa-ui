@@ -17,6 +17,8 @@ export interface LocationBubbleProps extends React.HTMLAttributes<HTMLDivElement
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
   onOpenMap?: () => void;
   /** Override the default Google Maps URL */
   mapsUrl?: string;
@@ -37,6 +39,7 @@ const LocationBubble = React.forwardRef<HTMLDivElement, LocationBubbleProps>(
       timestamp,
       status,
       showTail = false,
+      quote,
       onOpenMap,
       mapsUrl: mapsUrlProp,
       renderAction,
@@ -79,6 +82,9 @@ const LocationBubble = React.forwardRef<HTMLDivElement, LocationBubbleProps>(
             </svg>
           )}
 
+          {quote && (
+            <div className={cn("px-[3px] pt-[3px]", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming")}>{quote}</div>
+          )}
           {/* Map preview */}
           <button
             type="button"
