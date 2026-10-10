@@ -11,6 +11,8 @@ interface VoiceMessageBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
   /** When provided, the component manages playback internally */
   audioSrc?: string;
   /** Avatar image shown on the left when playing (incoming) */
@@ -50,6 +52,7 @@ const VoiceMessageBubble = React.forwardRef<HTMLDivElement, VoiceMessageBubblePr
       timestamp,
       status,
       showTail = false,
+      quote,
       audioSrc,
       avatarSrc,
       isPlaying: isPlayingProp = false,
@@ -129,6 +132,7 @@ const VoiceMessageBubble = React.forwardRef<HTMLDivElement, VoiceMessageBubblePr
             </svg>
           )}
 
+          {quote}
           <div className="flex items-center gap-[8px]">
             {/* Avatar (shown when playing) or play/pause button */}
             <div className="relative shrink-0 h-[40px] w-[40px]">

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React from "react";
 import { ImageBubble } from "@/components/ui/whatsapp/image-bubble";
 import { MediaViewer } from "@/components/ui/whatsapp/media-viewer";
+import { ReplyPreview } from "@/components/ui/whatsapp/reply-preview";
 import { VoiceMessageBubble } from "@/components/ui/whatsapp/voice-message-bubble";
 import { FileAttachmentBubble } from "@/components/ui/whatsapp/file-attachment-bubble";
 
@@ -181,4 +182,25 @@ export const ImageWithViewer: Story = {
       </>
     );
   },
+};
+
+/** A photo sent as a reply: the quote sits above the media, as in WhatsApp. */
+export const ImageReply: Story = {
+  name: "Image / Reply",
+  render: () => (
+    <ImageBubble
+      variant="incoming"
+      src={LANDSCAPE}
+      caption="Here it is"
+      timestamp="10:31"
+      showTail
+      quote={<ReplyPreview author="You" body="Can you send a photo of the receipt?" />}
+    />
+  ),
+};
+
+/** Outgoing image that failed to send. */
+export const ImageFailed: Story = {
+  name: "Image / Failed",
+  render: () => <ImageBubble variant="outgoing" src={LANDSCAPE} timestamp="10:32" status="failed" showTail />,
 };

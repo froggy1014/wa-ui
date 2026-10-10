@@ -27,6 +27,8 @@ export interface InteractiveReplyBubbleProps extends React.HTMLAttributes<HTMLDi
   quotedAuthorColor?: string;
   /** Body of the message being replied to */
   quotedText?: string;
+  /** Called when the quote is clicked, e.g. to scroll to the original message */
+  onQuoteClick?: () => void;
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
@@ -47,6 +49,7 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
       quotedAuthor,
       quotedAuthorColor,
       quotedText,
+      onQuoteClick,
       timestamp,
       status,
       showTail = false,
@@ -95,6 +98,7 @@ const InteractiveReplyBubble = React.forwardRef<HTMLDivElement, InteractiveReply
               author={quotedAuthor || "You"}
               authorColor={quotedAuthorColor}
               body={quotedText}
+              onClick={onQuoteClick}
             />
           )}
 

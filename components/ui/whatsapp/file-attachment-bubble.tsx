@@ -20,6 +20,8 @@ interface FileAttachmentBubbleProps extends React.HTMLAttributes<HTMLDivElement>
   downloadStatus?: DownloadStatus;
   downloadProgress?: number;
   showTail?: boolean;
+  /** Quoted message shown above the content, e.g. a ReplyPreview when this is a reply */
+  quote?: React.ReactNode;
   /** Direct download URL — renders button as <a download> for native browser download */
   downloadUrl?: string;
   onDownload?: () => void;
@@ -119,6 +121,7 @@ const FileAttachmentBubble = React.forwardRef<
       downloadStatus = "idle",
       downloadProgress,
       showTail = false,
+      quote,
       downloadUrl,
       onDownload,
       ...props
@@ -176,6 +179,7 @@ const FileAttachmentBubble = React.forwardRef<
             </svg>
           )}
 
+          {quote}
           {/* File row */}
           <div className="flex items-center gap-[10px]">
             {/* Colored file type icon */}
