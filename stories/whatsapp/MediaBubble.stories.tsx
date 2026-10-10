@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React from "react";
 import { ImageBubble } from "@/components/ui/whatsapp/image-bubble";
+import { MediaViewer } from "@/components/ui/whatsapp/media-viewer";
 import { VoiceMessageBubble } from "@/components/ui/whatsapp/voice-message-bubble";
 import { FileAttachmentBubble } from "@/components/ui/whatsapp/file-attachment-bubble";
 
@@ -165,4 +166,19 @@ export const Conversation: Story = {
       <ImageBubble variant="incoming" src={PORTRAIT} timestamp="10:29" showTail />
     </div>
   ),
+};
+
+/** Click an image to open it full screen. */
+export const ImageWithViewer: Story = {
+  name: "Image / Viewer",
+  render: function Render() {
+    const [open, setOpen] = React.useState<number | null>(null);
+    const srcs = [LANDSCAPE, PORTRAIT];
+    return (
+      <>
+        <ImageBubble variant="incoming" images={srcs} timestamp="10:24" showTail onMediaClick={(i) => setOpen(i)} />
+        <MediaViewer items={srcs.map((src) => ({ src, caption: "Trip photos" }))} index={open} onIndexChange={setOpen} title="Alice · 10:24" />
+      </>
+    );
+  },
 };

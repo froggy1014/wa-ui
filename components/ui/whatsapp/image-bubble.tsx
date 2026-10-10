@@ -16,6 +16,8 @@ interface ImageBubbleProps extends React.HTMLAttributes<HTMLDivElement> {
   timestamp?: string;
   status?: MessageStatus;
   showTail?: boolean;
+  /** Called when an image is clicked (e.g. open a MediaViewer) with its index and src */
+  onMediaClick?: (index: number, src: string) => void;
 }
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
@@ -44,17 +46,26 @@ function ImageCell({
   overlay,
   className,
   naturalSize = false,
+  onClick,
 }: {
   src: string;
   overlay?: React.ReactNode;
   className?: string;
   naturalSize?: boolean;
+  onClick?: () => void;
 }) {
   const [loaded, setLoaded] = React.useState(false);
 
   return (
     // The placeholder colour only shows while loading; transparent PNGs then sit on the bubble.
-    <div className={cn("relative overflow-hidden", !loaded && "bg-wa-gray-800", className)}>
+    <div
+      className={cn("relative overflow-hidden", !loaded && "bg-wa-gray-800", onClick && "cursor-zoom-in", className)}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      aria-label={onClick ? "Open image" : undefined}
+      onClick={onClick}
+      onKeyDown={onClick ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onClick()) : undefined}
+    >
       {!loaded && (
         <div className={cn("animate-pulse bg-wa-gray-700", naturalSize ? "min-h-[160px] w-full" : "absolute inset-0")} />
       )}
@@ -77,13 +88,14 @@ function ImageCell({
 
 // ─── Grid layouts ─────────────────────────────────────────────────────────────
 
-function ImageGrid({ items }: { items: string[] }) {
+function ImageGrid({ items, onOpen }: { items: string[]; onOpen?: (index: number) => void }) {
+  const open = (i: number) => (onOpen ? () => onOpen(i) : undefined);
   const visible = items.slice(0, 4);
   const extra = items.length - 4;
   const count = visible.length;
 
   if (count === 1) {
-    return <ImageCell src={visible[0]} className="w-full max-h-[330px]" naturalSize />;
+    return <ImageCell src={visible[0]} className="w-full max-h-[330px]" naturalSize onClick={open(0)} />;
   }
 
   const cellClass = "h-[165px] w-[165px]";
@@ -92,7 +104,7 @@ function ImageGrid({ items }: { items: string[] }) {
     return (
       <div className="grid grid-cols-2 gap-[2px]">
         {visible.map((src, i) => (
-          <ImageCell key={i} src={src} className={cellClass} />
+          <ImageCell key={i} src={src} className={cellClass} onClick={open(i)} />
         ))}
       </div>
     );
@@ -101,9 +113,9 @@ function ImageGrid({ items }: { items: string[] }) {
   if (count === 3) {
     return (
       <div className="grid grid-cols-2 gap-[2px]">
-        <ImageCell src={visible[0]} className="h-[332px] w-[165px]" />
-        <ImageCell src={visible[1]} className={cellClass} />
-        <ImageCell src={visible[2]} className={cellClass} />
+        <ImageCell src={visible[0]} className="h-[332px] w-[165px]" onClick={open(0)} />
+        <ImageCell src={visible[1]} className={cellClass} onClick={open(1)} />
+        <ImageCell src={visible[2]} className={cellClass} onClick={open(2)} />
       </div>
     );
   }
@@ -117,6 +129,7 @@ function ImageGrid({ items }: { items: string[] }) {
             key={i}
             src={src}
             className={cellClass}
+            onClick={open(i)}
             overlay={
               isLast ? (
                 <div className="flex h-full items-center justify-center bg-black/50">
@@ -145,6 +158,7 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
       timestamp,
       status,
       showTail = false,
+      onMediaClick,
       ...props
     },
     ref
@@ -186,7 +200,7 @@ const ImageBubble = React.forwardRef<HTMLDivElement, ImageBubbleProps>(
 
           {/* Media / Grid */}
           <div className="relative">
-            <ImageGrid items={items} />
+            <ImageGrid items={items} onOpen={onMediaClick ? (i) => onMediaClick(i, items[i]) : undefined} />
             {isOutgoing && status === "sending" && <MediaSendingOverlay />}
 
             {/* Timestamp overlay (no caption) */}

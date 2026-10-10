@@ -46,6 +46,7 @@ Each component is independent — install only what you need.
 | `reply-bar` | "Replying to…" strip above the compose bar |
 | `emoji-picker` | Compose-bar emoji button with a categorized grid |
 | `message-text` | WhatsApp *bold* / _italic_ / ~strike~ / `code` and clickable links |
+| `media-viewer` | Full-screen photo/video viewer with caption, download, prev/next |
 
 ---
 
