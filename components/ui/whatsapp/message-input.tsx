@@ -17,10 +17,13 @@ interface MessageInputProps
   /** Custom element rendered to the right of the input area (outside the rounded box).
    *  Can be a render function that receives `{ hasMessage, submit }` to toggle icons based on input state. */
   rightAction?: React.ReactNode | ((ctx: { hasMessage: boolean; submit: () => void }) => React.ReactNode);
+  /** Elements at the right end inside the rounded area, as in current WhatsApp Web
+   *  (mic, or the send button once there is text). Same render-function form as rightAction. */
+  trailingActions?: React.ReactNode | ((ctx: { hasMessage: boolean; submit: () => void }) => React.ReactNode);
 }
 
 const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
-  ({ className, onSubmit, value, onValueChange, placeholder = "Type a message", disabled = false, leftActions, rightAction, ...props }, ref) => {
+  ({ className, onSubmit, value, onValueChange, placeholder = "Type a message", disabled = false, leftActions, rightAction, trailingActions, ...props }, ref) => {
     const [internal, setInternal] = React.useState("");
     const message = value ?? internal;
     const setMessage = (next: string) => {
@@ -63,6 +66,8 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
       handleInput();
     }, [message]);
 
+    const ctx = { hasMessage: message.trim().length > 0, submit: handleSubmit };
+
     return (
       <div
         ref={ref}
@@ -91,12 +96,11 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
             )}
             style={{ height: "24px" }}
           />
+          {typeof trailingActions === "function" ? trailingActions(ctx) : trailingActions}
         </div>
 
         {/* Right action (outside the rounded area) */}
-        {typeof rightAction === "function"
-          ? rightAction({ hasMessage: message.trim().length > 0, submit: handleSubmit })
-          : rightAction}
+        {typeof rightAction === "function" ? rightAction(ctx) : rightAction}
       </div>
     );
   }
