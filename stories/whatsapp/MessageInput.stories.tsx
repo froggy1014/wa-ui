@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
+import * as React from "react";
+import { EmojiPicker } from "@/components/ui/whatsapp/emoji-picker";
 import { MessageInput } from "@/components/ui/whatsapp/message-input";
 
 const meta: Meta<typeof MessageInput> = {
@@ -101,5 +103,27 @@ export const Disabled: Story = {
 export const InputOnly: Story = {
   args: {
     placeholder: "No actions, just input",
+  },
+};
+
+/** Controlled value with the emoji picker inserting into the draft. */
+export const WithEmojiPicker: Story = {
+  render: function Render() {
+    const [text, setText] = React.useState("");
+    return (
+      <MessageInput
+        value={text}
+        onValueChange={setText}
+        leftActions={<EmojiPicker onSelect={(emoji) => setText((t) => t + emoji)} />}
+        rightAction={({ hasMessage, submit }) =>
+          hasMessage ? (
+            <button type="button" className={iconBtn} aria-label="Send" onClick={submit}>
+              <SendIcon />
+            </button>
+          ) : null
+        }
+        onSubmit={() => setText("")}
+      />
+    );
   },
 };
