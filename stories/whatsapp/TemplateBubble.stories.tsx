@@ -62,6 +62,7 @@ export const OutgoingWithStatus: Story = {
       body="Your request has been received. We'll get back to you shortly."
       timestamp="10:42"
       status="read"
+      showTail
     />
   ),
 };

@@ -53,6 +53,8 @@ export interface TemplateBubbleProps
   timestamp?: string;
   /** Delivery status ticks, shown for outgoing templates */
   status?: MessageStatus;
+  /** Bubble tail on the last message of a group (templates without buttons) */
+  showTail?: boolean;
   /** Override the default `<a>` element for URL/phone buttons (e.g. Next.js Link) */
   renderAction?: (props: { href: string; children: React.ReactNode; className: string; target?: string; rel?: string }) => React.ReactElement;
 }
@@ -252,9 +254,11 @@ function TemplateButtonRow({ button, renderAction }: { button: TemplateButton; r
 // ─── Main component ───────────────────────────────────────────────────────────
 
 const TemplateBubble = React.forwardRef<HTMLDivElement, TemplateBubbleProps>(
-  ({ className, variant = "incoming", header, body, footer, buttons = [], timestamp, status, renderAction, ...props }, ref) => {
+  ({ className, variant = "incoming", header, body, footer, buttons = [], timestamp, status, showTail = false, renderAction, ...props }, ref) => {
     const hasButtons = buttons.length > 0;
     const isOutgoing = variant === "outgoing";
+    // Buttons hang below the body, so a tail would point at nothing there.
+    const tail = showTail && !hasButtons;
 
     return (
       <div
@@ -263,7 +267,15 @@ const TemplateBubble = React.forwardRef<HTMLDivElement, TemplateBubbleProps>(
         {...props}
       >
         {/* Bubble */}
-        <div className={cn("overflow-hidden rounded-lg shadow-sm", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming")}>
+        <div className="relative">
+        {tail && (
+          <svg viewBox="0 0 8 13" width="8" height="13" className={cn("absolute bottom-0", isOutgoing ? "-right-[8px]" : "-left-[8px]")}>
+            {isOutgoing
+              ? <path d="M5.188 13H0V1.807l6.467 8.625C7.526 11.844 6.958 13 5.188 13z" className="fill-wa-bubble-outgoing" />
+              : <path d="M1.533 10.432L8 1.807V13H2.812C1.042 13 .474 11.844 1.533 10.432z" className="fill-wa-bubble-incoming" />}
+          </svg>
+        )}
+        <div className={cn("overflow-hidden rounded-lg shadow-sm", isOutgoing ? "bg-wa-bubble-outgoing" : "bg-wa-bubble-incoming", tail && (isOutgoing ? "rounded-br-[3px]" : "rounded-bl-[3px]"))}>
           {/* Header */}
           {header?.type === "image" && <ImageHeader imageUrl={header.imageUrl} />}
           {header?.type === "video" && <VideoHeader videoUrl={header.videoUrl} />}
@@ -303,6 +315,7 @@ const TemplateBubble = React.forwardRef<HTMLDivElement, TemplateBubbleProps>(
               ))}
             </div>
           )}
+        </div>
         </div>
       </div>
     );
