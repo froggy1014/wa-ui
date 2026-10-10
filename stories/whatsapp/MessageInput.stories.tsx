@@ -127,3 +127,36 @@ export const WithEmojiPicker: Story = {
     );
   },
 };
+
+/** Current WhatsApp Web layout: attach and emoji on the left, send inside the bar. */
+export const InlineActions: Story = {
+  render: function Render() {
+    const [text, setText] = React.useState("");
+    return (
+      <MessageInput
+        value={text}
+        onValueChange={setText}
+        leftActions={
+          <>
+            <button type="button" className={iconBtn} aria-label="Attach">
+              <PlusIcon />
+            </button>
+            <EmojiPicker onSelect={(emoji) => setText((t) => t + emoji)} />
+          </>
+        }
+        trailingActions={({ hasMessage, submit }) =>
+          hasMessage ? (
+            <button type="button" aria-label="Send" onClick={submit} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-wa-emerald-500 text-white">
+              <SendIcon />
+            </button>
+          ) : (
+            <button type="button" className={iconBtn} aria-label="Voice message">
+              <MicIcon />
+            </button>
+          )
+        }
+        onSubmit={() => setText("")}
+      />
+    );
+  },
+};
