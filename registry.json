@@ -528,6 +528,17 @@
         { "path": "components/ui/whatsapp/emoji-picker.tsx", "type": "registry:component", "target": "components/ui/whatsapp/emoji-picker.tsx" },
         { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
       ]
+    },
+    {
+      "name": "message-text",
+      "type": "registry:component",
+      "title": "Message Text",
+      "description": "WhatsApp text formatting for message bodies: *bold*, _italic_, ~strike~, `code`, ```block```, clickable links, preserved line breaks.",
+      "registryDependencies": [],
+      "files": [
+        { "path": "components/ui/whatsapp/message-text.tsx", "type": "registry:component", "target": "components/ui/whatsapp/message-text.tsx" },
+        { "path": "components/ui/whatsapp/styles/whatsapp.css", "type": "registry:file", "target": "components/ui/whatsapp/styles/whatsapp.css" }
+      ]
     }
   ]
 }

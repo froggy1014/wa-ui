@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React from "react";
 import { ChatBubble } from "@/components/ui/whatsapp/chat-bubble";
+import { MessageText } from "@/components/ui/whatsapp/message-text";
 
 const meta: Meta<typeof ChatBubble> = {
   title: "WhatsApp/ChatBubble",
@@ -55,4 +56,14 @@ export const Conversation: Story = {
       <ChatBubble variant="outgoing" timestamp="10:23" status="sending" showTail>On it ☕</ChatBubble>
     </div>
   ),
+};
+
+/** Body text with WhatsApp formatting and a link, via MessageText. */
+export const FormattedText: Story = {
+  args: {
+    variant: "incoming",
+    timestamp: "10:30",
+    showTail: true,
+    children: <MessageText text={"*Order shipped* 🎉\n_Arrives_ ~Friday~ Thursday — track it at https://example.com/track/123\n`ID: 42`"} />,
+  },
 };
