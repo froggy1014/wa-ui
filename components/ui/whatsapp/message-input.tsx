@@ -40,15 +40,20 @@ const MessageInput = React.forwardRef<HTMLDivElement, MessageInputProps>(
         setMultiline(false);
         if (textareaRef.current) {
           textareaRef.current.style.height = "24px";
+          // A send button that disappears with the text must not drop focus to the page.
+          textareaRef.current.focus();
         }
       }
     };
 
     const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        handleSubmit();
-      }
+      if (e.key !== "Enter" || e.shiftKey) return;
+      // Enter that commits an IME composition (Korean, Japanese, …) is not a send.
+      if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+      // On touch keyboards Enter adds a line, as in WhatsApp mobile; the send button sends.
+      if (typeof window !== "undefined" && window.matchMedia?.("(pointer: coarse)").matches) return;
+      e.preventDefault();
+      handleSubmit();
     };
 
     const handleInput = () => {
